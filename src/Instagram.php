@@ -723,6 +723,18 @@ class Instagram
             throw new InstagramException($error);
         }
 
+        if (isset($jsonData->meta->code) && $jsonData->meta->code !== 200) {
+            if (isset($jsonData->meta->error_message)) {
+                $message = $jsonData->meta->error_message;
+            } else {
+                $message = 'Unknown API Error';
+            }
+            if (isset($jsonData->meta->error_type)) {
+                $message = sprintf('[%s] %s', $jsonData->meta->error_type, $message);
+            }
+            throw new InstagramException($message, $jsonData->meta->code);
+        }
+
         return $jsonData;
     }
 
