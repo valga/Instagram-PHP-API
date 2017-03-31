@@ -674,6 +674,7 @@ class Instagram
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_ENCODING, '');
 
         switch ($method) {
             case 'POST':
