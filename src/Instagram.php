@@ -688,7 +688,9 @@ class Instagram
         $jsonData = curl_exec($ch);
 
         if (!$jsonData) {
-            throw new InstagramException('Error: _makeCall() - cURL error: ' . curl_error($ch));
+            $error = sprintf('Error: _makeCall() - cURL error %d: %s', curl_errno($ch), curl_error($ch));
+            curl_close($ch);
+            throw new InstagramException($error);
         }
 
         // split header from JSON data
