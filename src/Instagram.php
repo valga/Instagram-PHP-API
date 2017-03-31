@@ -693,7 +693,13 @@ class Instagram
 
         // split header from JSON data
         // and assign each to a variable
-        list($headerContent, $jsonData) = explode("\r\n\r\n", $jsonData, 2);
+        $parts = explode("\r\n\r\n", $jsonData);
+        $partsCount = count($parts);
+        if ($partsCount < 2) {
+            throw new InstagramException('Response body is missing');
+        }
+        $headerContent = $parts[$partsCount - 2];
+        $jsonData = $parts[$partsCount - 1];
 
         // convert header content into an array
         $headers = $this->processHeaders($headerContent);
