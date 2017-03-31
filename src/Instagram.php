@@ -713,7 +713,17 @@ class Instagram
 
         curl_close($ch);
 
-        return json_decode($jsonData);
+        $jsonData = json_decode($jsonData);
+        if (($error = json_last_error()) !== JSON_ERROR_NONE) {
+            if (function_exists('json_last_error_msg')) {
+                $error = sprintf('json_decode error %d: %s', $error, json_last_error_msg());
+            } else {
+                $error = sprintf('json_decode error %d', $error);
+            }
+            throw new InstagramException($error);
+        }
+
+        return $jsonData;
     }
 
     /**
