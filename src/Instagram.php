@@ -707,8 +707,8 @@ class Instagram
         $headers = $this->processHeaders($headerContent);
         
         // get the 'X-Ratelimit-Remaining' header value
-        if (isset($headers['X-Ratelimit-Remaining'])) {
-            $this->_xRateLimitRemaining = trim($headers['X-Ratelimit-Remaining']);
+        if (isset($headers['X-RATELIMIT-REMAINING'])) {
+            $this->_xRateLimitRemaining = (int)trim($headers['X-RATELIMIT-REMAINING']);
         }
 
         curl_close($ch);
@@ -799,12 +799,12 @@ class Instagram
 
         foreach (explode("\r\n", $headerContent) as $i => $line) {
             if ($i === 0) {
-                $headers['http_code'] = $line;
+                $headers['HTTP_CODE'] = $line;
                 continue;
             }
 
             list($key, $value) = explode(':', $line);
-            $headers[$key] = $value;
+            $headers[strtoupper($key)] = $value;
         }
 
         return $headers;
